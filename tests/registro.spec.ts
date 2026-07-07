@@ -134,24 +134,6 @@ test.describe('Registro de usuario', () => {
   });
 
   test('4. Registro exitoso con código válido - documentación del flujo', async ({ page }) => {
-    /**
-     * CASO NO AUTOMATIZABLE COMPLETAMENTE:
-     * 
-     * El registro exitoso requiere:
-     * 1. Ingresar un email válido no registrado
-     * 2. Recibir un código de verificación en ese email
-     * 3. Ingresar el código recibido
-     * 4. Completar datos del perfil
-     * 
-     * No se puede automatizar porque:
-     * - Requiere acceso a un buzón de correo real para obtener el código OTP
-     * - El código es temporal y se genera dinámicamente
-     * - No hay API pública para obtener el código de verificación
-     * 
-     * FLUJO EQUIVALENTE MÁS CERCANO:
-     * Verificar que el formulario de registro está accesible y que los campos
-     * requeridos están presentes en la página.
-     */
 
     // Verificar que la página de login/registro carga correctamente
     await expect(page).toHaveURL(/login/);
