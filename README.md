@@ -31,7 +31,7 @@
 │   └── data.ts
 ├── playwright.config.ts
 └── package.json
-
+````text
 
 ## 4. Funcionalidades Probadas (8 Módulos)
 
