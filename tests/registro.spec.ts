@@ -1,19 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { acceptCookies, TEST_DATA, generateTestEmail } from './helpers';
 
-/**
- * Pruebas E2E para el flujo de registro en Bruno Ferrini.
- * 
- * El sitio usa VTEX con un flujo de registro basado en:
- * 1. Ingresar email en la página de login
- * 2. Si el email no existe, ofrece crear cuenta
- * 3. Se envía un código de verificación al email
- * 4. El usuario ingresa el código para completar el registro
- * 
- * NOTA: El registro exitoso (caso 4) NO puede automatizarse completamente
- * porque requiere acceso al buzón de correo real para obtener el código OTP.
- */
-
 test.describe('Registro de usuario', () => {
   test.beforeEach(async ({ page }) => {
     // Navegar a la página de login/registro
@@ -24,15 +11,6 @@ test.describe('Registro de usuario', () => {
   });
 
   test('2. Solicitud de registro con correo válido - apertura del formulario', async ({ page }) => {
-    /**
-     * Caso: Ingresar un correo válido no registrado para iniciar el flujo de registro.
-     * Validaciones:
-     *   - El formulario de login está visible con campo de email
-     *   - Se acepta el correo (no muestra error de formato)
-     *   - Aparece el siguiente paso (solicitud de código o contraseña)
-     */
-
-    // Verificar que el formulario de login está visible
     const emailInput = page.getByPlaceholder('Ej.: ejemplo@mail.com');
     await expect(emailInput).toBeVisible();
 
@@ -91,12 +69,6 @@ test.describe('Registro de usuario', () => {
   test('3. Código de verificación incorrecto debe mostrar mensaje de error', async ({ page }) => {
     /**
      * Caso: Ingresar un código de verificación incorrecto durante el registro.
-     * 
-     * NOTA IMPORTANTE: Este test depende de que el flujo de VTEX muestre un campo
-     * para código de verificación después de ingresar el email. Si el sitio usa
-     * contraseña directa en lugar de código, se documenta la diferencia.
-     */
-
     // Ingresar email para iniciar flujo de registro
     const emailInput = page.getByPlaceholder('Ej.: ejemplo@mail.com');
     await emailInput.fill(generateTestEmail());
