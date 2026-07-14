@@ -1,0 +1,42 @@
+# .github/workflows/ci-playwright.yml
+# Pipeline: ejecuta los tests E2E de Playwright en cada Pull Request
+name: CI - Tests E2E Playwright
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-e2e:
+    name: Ejecutar suite Playwright
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar código
+        uses: actions/checkout@v4
+
+      - name: Instalar Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Instalar dependencias
+        run: npm install
+
+      # Instalar los navegadores de Playwright en el servidor de GitHub
+      - name: Instalar navegadores Playwright
+        run: npx playwright install --with-deps chromium
+
+      # Ejecutar los tests E2E en modo headless
+      - name: Ejecutar tests E2E
+        run: npx playwright test
+
+      # Subir el reporte HTML como artefacto
+      - name: Subir reporte Playwright
+        uses: actions/upload-artifact@v4
+        if: always() # subir aunque los tests fallen
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
